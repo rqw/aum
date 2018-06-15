@@ -1,0 +1,14 @@
+#端口默认为md5(us.haojiankang.com)<<48>>48
+server:
+  port: 4437
+  url: http://127.0.0.1:${server.port}
+spring:
+  datasource:
+    url: jdbc:sqlite:%s%sus.db
+    classname: org.sqlite.JDBC
+logging:
+  level:
+     com:
+        haojiankang:
+          updateservice: debug
+  file: us.log
