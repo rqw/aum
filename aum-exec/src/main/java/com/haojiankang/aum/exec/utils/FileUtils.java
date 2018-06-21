@@ -1,7 +1,6 @@
-package com.haojiankang.aum.daemon.utils;
+package com.haojiankang.aum.exec.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.system.ApplicationHome;
 
 import java.io.*;
 import java.nio.MappedByteBuffer;
@@ -32,8 +31,7 @@ public class FileUtils {
        return  writeFile(bs,new File(targetFile,fileName));
     }
     public static File getBasePath() {
-        ApplicationHome home = new ApplicationHome(FileUtils.class);
-        return home.getDir();
+        return new File("");
     }
     public static String readFileToString(File file, String encoding) throws IOException {
         if (file == null)

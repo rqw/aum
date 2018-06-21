@@ -13,7 +13,7 @@ public class ConnectionManager {
             Class.forName(driver);
             conn = DriverManager.getConnection(url, userName,password);
         } catch (Exception e) {
-
+            log.error(e.getMessage(),e);
         }
         return conn;
     }
