@@ -18,9 +18,10 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class PackageInfoService {
-    private static final String PKG_DIR="package"+File.separator+"%s"+File.separator+"%s";
-    private static final String PKG_TMP_DIR=FileUtils.getBasePath().getAbsolutePath()+File.separator+"package"+File.separator+"tmp";
-    private static final String UPGRADE_PROGRAM=FileUtils.getBasePath().getAbsolutePath()+File.separator+"ext"+File.separator+"upgrade.jar";
+    private static final String BASE_DIR=FileUtils.getBasePath().getAbsolutePath()+File.separator;
+    private static final String PKG_DIR=String.format("%s%s%s",BASE_DIR,"package",File.separator);
+    private static final String PKG_TMP_DIR=String.format("%s%s%s",PKG_DIR,File.separator,"tmp");
+    private static final String UPGRADE_PROGRAM=String.format("%s%s%s%s",BASE_DIR,"ext",File.separator,"upgrade.jar");
     private static final String UPGRADE_CMD="cmd /c start java -jar %s %s";
     @Autowired
     private PackageInfoRepository pkgRep;
@@ -32,18 +33,21 @@ public class PackageInfoService {
             info.setId(null);
             info.setUploadtime(new Date());
             pkgRep.create(info);
-            FileUtils.writeFile(bytes,getPackageDir(info.getAppcode(),info.getPointcode() ),info.getVersion());
+            FileUtils.writeFile(bytes,new File(PKG_DIR,info.getAppcode()+File.separator+info.getPointcode()),info.getVersion());
         }
     }
-    private File getPackageDir(String appcode,String pointcode){
-       return new File(FileUtils.getBasePath(), String.format(PKG_DIR,appcode,pointcode ));
-    }
+
     public void runUpdate(String appcode,String pointcode){
-        File pkgDir=getPackageDir(appcode,pointcode);
+        
+        AppInfo appinfo= appRep.findByAppcodeAndPointcode(appcode,pointcode);
+        List<PackageInfo> pkgList = getPackageList(appcode, pointcode, appinfo);
+        call(appinfo,pkgList);
+    }
+
+    private List<PackageInfo> getPackageList(String appcode, String pointcode, AppInfo appinfo) {
         PackageInfo query=new PackageInfo();
         query.setAppcode(appcode);
         query.setPointcode(pointcode);
-        AppInfo appinfo= appRep.findByAppcodeAndPointcode(appcode,pointcode);
         List<PackageInfo> list=pkgRep.findByInfo(query,"and appcode=:appcode and pointcode=:pointcode order by uploadtime");
         List<PackageInfo> pkgList=new ArrayList<>();
         list.stream().forEach(pkg->{
@@ -52,10 +56,29 @@ public class PackageInfoService {
                 pkgList.add(pkg);
             }
         });
-        updateProgram(appinfo,pkgList);
+        return pkgList;
     }
-    private void updateProgram(AppInfo appinfo,List<PackageInfo> pkgList){
 
+    private void call(AppInfo appinfo,List<PackageInfo> pkgList){
+        File argFile = lockFile(appinfo, pkgList);
+        File execFile = ready();
+        //java -jar 调用 tmp下的jar
+        try{
+            Runtime.getRuntime().exec(String.format(UPGRADE_CMD,execFile.getAbsolutePath(),argFile.getAbsolutePath()));
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+        }
+    }
+
+    private File ready() {
+        File upgrade=new File(UPGRADE_PROGRAM);
+        File execFile=new File(PKG_TMP_DIR,upgrade.getName());
+        execFile.delete();
+        FileUtils.copyFile(upgrade,execFile);
+        return execFile;
+    }
+
+    private File lockFile(AppInfo appinfo, List<PackageInfo> pkgList) {
         StringBuilder args=new StringBuilder();
         args.append(String.format("code:%s,point:%s,properties:%s\r\nversion:",appinfo.getAppCode(),appinfo.getPointCode(),appinfo.getProperties()));
         pkgList.stream().forEach(pkg->{
@@ -63,19 +86,7 @@ public class PackageInfoService {
         });
         File argFile=new File(UUID.randomUUID().toString());
         FileUtils.writeFile(args.toString(),argFile);
-
-        File upgrade=new File(UPGRADE_PROGRAM);
-        //删除tmp 下的 upgrade.jar
-        File execFile=new File(PKG_TMP_DIR,upgrade.getName());
-        execFile.delete();
-        //把upgrade.jar 复制到 tmp下
-        FileUtils.copyFile(upgrade,execFile);
-        //java -jar 调用 tmp下的jar
-        try{
-            Runtime.getRuntime().exec(String.format(UPGRADE_CMD,execFile.getAbsolutePath(),argFile.getAbsolutePath()));
-        }catch (Exception e){
-            log.error(e.getMessage(),e);
-        }
+        return argFile;
     }
 
 }
