@@ -1,5 +1,5 @@
 package com.haojiankang.aum.exec.api;
 @FunctionalInterface
-public interface ExecCmd {
+public interface Cmd {
     public boolean exec();
 }

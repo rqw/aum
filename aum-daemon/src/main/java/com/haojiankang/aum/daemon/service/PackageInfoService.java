@@ -22,7 +22,7 @@ public class PackageInfoService {
     private static final String PKG_DIR=String.format("%s%s%s",BASE_DIR,"package",File.separator);
     private static final String PKG_TMP_DIR=String.format("%s%s%s",PKG_DIR,File.separator,"tmp");
     private static final String UPGRADE_PROGRAM=String.format("%s%s%s%s",BASE_DIR,"ext",File.separator,"upgrade.jar");
-    private static final String UPGRADE_CMD="cmd /c start java -jar %s %s";
+    private static final String UPGRADE_CMD="cmd /c start java -jar %s update %s";
     @Autowired
     private PackageInfoRepository pkgRep;
     @Autowired
@@ -80,7 +80,7 @@ public class PackageInfoService {
 
     private File lockFile(AppInfo appinfo, List<PackageInfo> pkgList) {
         StringBuilder args=new StringBuilder();
-        args.append(String.format("code:%s,point:%s,properties:%s\r\nversion:",appinfo.getAppCode(),appinfo.getPointCode(),appinfo.getProperties()));
+        args.append(String.format("code:%s,point:%s,pkgdir:%s,properties:%sversion:",appinfo.getAppCode(),appinfo.getPointCode(),PKG_DIR,appinfo.getProperties()));
         pkgList.stream().forEach(pkg->{
             args.append(String.format("%s,",pkg.getVersion()));
         });
