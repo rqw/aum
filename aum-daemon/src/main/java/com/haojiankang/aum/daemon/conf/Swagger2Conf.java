@@ -1,5 +1,6 @@
 package com.haojiankang.aum.daemon.conf;
 
+import com.haojiankang.aum.daemon.AumDaemonApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -25,7 +26,7 @@ public class Swagger2Conf {
                         .description("更新服务相关接口api信息。")
                         .build())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.haojiankang.updateservice"))
+                .apis(RequestHandlerSelectors.basePackage(AumDaemonApplication.class.getPackage().getName()))
                 .paths(PathSelectors.any())
                 .build();
     }

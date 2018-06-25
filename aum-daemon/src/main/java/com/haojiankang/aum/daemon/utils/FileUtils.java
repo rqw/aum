@@ -16,8 +16,8 @@ public class FileUtils {
        return writeFile(content.getBytes(),targetFile);
     }
     public static boolean writeFile(byte[] bs, File targetFile) {
-        if(!targetFile.exists()){
-            targetFile.mkdirs();
+        if(!targetFile.getParentFile().exists()){
+            targetFile.getParentFile().mkdirs();
         }
         try(FileOutputStream out = new FileOutputStream(targetFile);){
             out.write(bs);

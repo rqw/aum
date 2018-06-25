@@ -10,5 +10,5 @@ logging:
   level:
      com:
         haojiankang:
-          updateservice: debug
-  file: us.log
+           aum:
+              daemon: debug

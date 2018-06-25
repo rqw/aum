@@ -4,9 +4,13 @@ import com.haojiankang.aum.exec.api.Cmd;
 import com.haojiankang.aum.exec.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.zeroturnaround.zip.ZipUtil;
+import sun.reflect.annotation.ExceptionProxy;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,16 +52,13 @@ public class UpdateCmd implements Cmd {
 
     @Override
     public boolean exec() {
+        List<File> listFile=new ArrayList<>();
+        Map<String,String>  options=new HashMap<>();
         if(versions.length==1){
-
+            unpackAndResolve(listFile,options,versions[0]);
         }else{
             for(String version:versions){
-                //解压并验证安装包的完整性
-                File sourceFile=new File(pkgdir,String.format("%s%s%s%s%s",code,File.separator,point,File.separator,version));
-                ZipUtil.unexplode(sourceFile);
-                //验证安装文件
-                //解析安装文件
-
+                unpackAndResolve(listFile, options, version);
             }
         }
         //根据安装文件解析结果执行安装
@@ -67,6 +68,36 @@ public class UpdateCmd implements Cmd {
         //修改当前应用程序版本信息
 
         return false;
+    }
+
+    private void unpackAndResolve(List<File> listFile, Map<String, String> options, String version) {
+        try {
+            File sourceFile = new File(pkgdir, String.format("%s%s%s%s%s", code, File.separator, point, File.separator, version));
+            File tmpFile = new File(pkgdir, String.format("tmp%s%s_%s_%s", File.separator, code, point, version));
+            //解压并验证安装包的完整性
+            ZipUtil.unpack(sourceFile, tmpFile);
+            String verify=FileUtils.readFileToString(new File(tmpFile,"sign.verify"), System.getProperty("file.encoding"));
+            Pattern compile = Pattern.compile("md5:(.*),version:(.*),time:(.*)");
+            Matcher matcher = compile.matcher(verify);
+            String md5=null,ver=null,time=null;
+            if(matcher.find()) {
+                md5 = matcher.group(1);
+                ver = matcher.group(2);
+                time = matcher.group(3);
+            }
+            String fmd5=FileUtils.md5(new File(tmpFile,"data.zip"));
+            if(!fmd5.equals(md5)||!version.equals(ver)){
+                throw new RuntimeException("升级包文件验证未通过!");
+            }
+            listFile.add(tmpFile);
+            options.put("server@start", "");
+            //验证安装文件
+
+            //解析安装文件
+
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+        }
     }
 
 }

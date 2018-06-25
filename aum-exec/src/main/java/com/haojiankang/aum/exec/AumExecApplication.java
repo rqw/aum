@@ -11,6 +11,7 @@ import java.util.List;
 @Slf4j
 public class AumExecApplication {
     public static void main(String[] args){
+        args=new String[]{"update","D:\\run\\7a31b0a6-b084-4bef-9894-36c0a9625629.uuid"};
         resolve(args).exec();
     }
     private static Cmd resolve(String[] args){

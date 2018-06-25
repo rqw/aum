@@ -64,7 +64,9 @@ public class PackageInfoService {
         File execFile = ready();
         //java -jar 调用 tmp下的jar
         try{
-            Runtime.getRuntime().exec(String.format(UPGRADE_CMD,execFile.getAbsolutePath(),argFile.getAbsolutePath()));
+            String cmd=String.format(UPGRADE_CMD,execFile.getAbsolutePath(),argFile.getAbsolutePath());
+            log.debug("run cmd:{}",cmd);
+            Runtime.getRuntime().exec(cmd);
         }catch (Exception e){
             log.error(e.getMessage(),e);
         }
@@ -80,11 +82,11 @@ public class PackageInfoService {
 
     private File lockFile(AppInfo appinfo, List<PackageInfo> pkgList) {
         StringBuilder args=new StringBuilder();
-        args.append(String.format("code:%s,point:%s,pkgdir:%s,properties:%sversion:",appinfo.getAppCode(),appinfo.getPointCode(),PKG_DIR,appinfo.getProperties()));
+        args.append(String.format("code:%s,point:%s,pkgdir:%s,properties:%s,version:",appinfo.getAppCode(),appinfo.getPointCode(),PKG_DIR,appinfo.getProperties()));
         pkgList.stream().forEach(pkg->{
             args.append(String.format("%s,",pkg.getVersion()));
         });
-        File argFile=new File(UUID.randomUUID().toString());
+        File argFile=new File(FileUtils.getBasePath(),UUID.randomUUID().toString()+".uuid");
         FileUtils.writeFile(args.toString(),argFile);
         return argFile;
     }
