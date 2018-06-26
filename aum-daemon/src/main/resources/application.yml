@@ -12,3 +12,9 @@ logging:
         haojiankang:
            aum:
               daemon: debug
+aum:
+  daemon:
+      name: aum-daemon
+      appcode: aum-daemon
+      startup: cmd /c start java -jar d:\run\aum-daemon-1.0-SNAPSHOT.jar
+      shutdown:

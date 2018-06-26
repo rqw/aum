@@ -49,7 +49,7 @@ public class PackageInfoRepository {
                 new BeanPropertySqlParameterSource(info));
     }
     public void delete(String id) {
-        namedTemplate.update("delete from appinfo where id=:id",Maps.newHMap("id",id));
+        namedTemplate.update("delete from packageinfo where id=:id",Maps.newHMap("id",id));
     }
 
 

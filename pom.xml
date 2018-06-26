@@ -11,5 +11,6 @@
     <modules>
         <module>aum-daemon</module>
         <module>aum-exec</module>
+        <module>aum-api</module>
     </modules>
 </project>

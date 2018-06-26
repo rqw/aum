@@ -82,7 +82,7 @@ public class PackageInfoService {
 
     private File lockFile(AppInfo appinfo, List<PackageInfo> pkgList) {
         StringBuilder args=new StringBuilder();
-        args.append(String.format("code:%s,point:%s,pkgdir:%s,properties:%s,version:",appinfo.getAppCode(),appinfo.getPointCode(),PKG_DIR,appinfo.getProperties()));
+        args.append(String.format("code:%s,point:%s,basedir:%s,properties:%s,version:",appinfo.getAppCode(),appinfo.getPointCode(),BASE_DIR,appinfo.getProperties()));
         pkgList.stream().forEach(pkg->{
             args.append(String.format("%s,",pkg.getVersion()));
         });
