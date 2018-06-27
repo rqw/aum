@@ -20,7 +20,6 @@ public class FileUtils {
         }
         try(FileOutputStream out = new FileOutputStream(targetFile);){
             out.write(bs);
-            out.flush();
         }catch(Exception e){
             log.error(e.getMessage(),e);
             return false;

@@ -38,16 +38,16 @@ public class UpdateCmd implements Cmd {
             throw new RuntimeException("updatecmd args fail!");
         }
         try{
-            String content = FileUtils.readFileToString(new File(args[1]), System.getProperty("file.encoding"));
+                        String content = FileUtils.readFileToString(new File(args[1]), System.getProperty("file.encoding"));
             Pattern compile = Pattern.compile("code:(.*),point:(.*),basedir:(.*),properties:(.*),version:(.*)");
-            Matcher matcher = compile.matcher(content);
+            Matcher matcher = compile.matcher(content.replace("\r\n",""));
             if(matcher.find()){
                 code=matcher.group(1);
                 point=matcher.group(2);
                 basedir=matcher.group(3);
                 pkgdir=String.format("%s%s%s",basedir,File.separator,"package");
                 properties=matcher.group(4);
-                env=JsonUtils.parse(properties);
+                env=JsonUtils.parse(properties,env.getClass());
                 versions=matcher.group(5).split(",");
             }else{
                 throw new RuntimeException("updatecmd args file content is fail!");
@@ -78,11 +78,12 @@ public class UpdateCmd implements Cmd {
             //执行安装
             ProcessUtils.exec(env.get("startup"));
             //修改当前应用程序版本信息
+
+            //删除参数文件
+           // new File(args[1]).delete();
         }catch (Exception e){
-
+            log.error(e.getMessage(),e);
         }
-
-
         return false;
     }
 
@@ -101,15 +102,15 @@ public class UpdateCmd implements Cmd {
                 ver = matcher.group(2);
                 time = matcher.group(3);
             }
+
+            //验证安装文件
             String fmd5=FileUtils.md5(new File(tmpFile,"data.zip"));
             if(!fmd5.equals(md5)||!version.equals(ver)){
                 throw new RuntimeException("升级包文件验证未通过!");
             }
             listFile.add(tmpFile);
-            //验证安装文件
-
-            //解析安装文件
-
+            //解压data.zip
+            ZipUtil.unpack(new File(tmpFile,"data.zip"),tmpFile);
         }catch (Exception e){
             log.error(e.getMessage(),e);
         }

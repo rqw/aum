@@ -7,6 +7,7 @@ import com.haojiankang.aum.daemon.repository.PackageInfoRepository;
 import com.haojiankang.aum.daemon.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -22,11 +23,12 @@ public class PackageInfoService {
     private static final String PKG_DIR=String.format("%s%s%s",BASE_DIR,"package",File.separator);
     private static final String PKG_TMP_DIR=String.format("%s%s%s",PKG_DIR,File.separator,"tmp");
     private static final String UPGRADE_PROGRAM=String.format("%s%s%s%s",BASE_DIR,"ext",File.separator,"upgrade.jar");
-    private static final String UPGRADE_CMD="cmd /c start java -jar %s update %s";
     @Autowired
     private PackageInfoRepository pkgRep;
     @Autowired
     private AppInfoRepository appRep;
+    @Autowired
+    private Environment env;
     public void save(PackageInfo info, byte[] bytes ) throws  Exception{
         List<PackageInfo> list=pkgRep.findByInfo(info,"and appcode=:appcode and pointcode=:pointcode and version=:version");
         if(list==null||list.size()==0||!list.stream().anyMatch(p->p.getState()==null||p.getState()==true)){
@@ -64,7 +66,7 @@ public class PackageInfoService {
         File execFile = ready();
         //java -jar 调用 tmp下的jar
         try{
-            String cmd=String.format(UPGRADE_CMD,execFile.getAbsolutePath(),argFile.getAbsolutePath());
+            String cmd=String.format(env.getProperty("aum.daemon.exec"),execFile.getAbsolutePath(),argFile.getAbsolutePath(),BASE_DIR);
             log.debug("run cmd:{}",cmd);
             Runtime.getRuntime().exec(cmd);
         }catch (Exception e){

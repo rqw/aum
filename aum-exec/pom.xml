@@ -48,6 +48,11 @@
             <version>2.6.4</version>
         </dependency>
         <dependency>
+            <groupId>org.xidea</groupId>
+            <artifactId>jsel</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.10</version>

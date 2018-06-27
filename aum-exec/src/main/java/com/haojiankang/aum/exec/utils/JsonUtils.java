@@ -1,6 +1,7 @@
 package com.haojiankang.aum.exec.utils;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -14,10 +15,13 @@ public class JsonUtils {
         return ojbmapper.writeValueAsString(obj);
     }
 
-    public static <T> T parse(String jsonStr) throws IOException {
+
+    public static <T extends Object> T parse( String jsonStr,Class<T> c) throws IOException {
         ObjectMapper ojbmapper = new ObjectMapper();
         ojbmapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         ojbmapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-        return (T)ojbmapper.readTree(jsonStr);
+        ojbmapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return ojbmapper.readValue(jsonStr, c);
+
     }
 }

@@ -88,33 +88,17 @@ public class FileUtils {
             return false;
         if (dest.isFile() && dest.exists())
             dest.delete();
-        byte[] buff = new byte[DEFAULT_BUFFER_SIZE];
-        try ( RandomAccessFile rafIn = new RandomAccessFile(src, "r");
-              RandomAccessFile rafOut = new RandomAccessFile(dest, "rw");
-              FileChannel fcIn = rafIn.getChannel();
-              FileChannel fcOut = rafOut.getChannel();
-              ){
-            long fileSize = fcIn.size();
-            MappedByteBuffer mbbIn = fcIn.map(FileChannel.MapMode.READ_ONLY, 0, fileSize);
-            MappedByteBuffer mbbOut = fcOut.map(FileChannel.MapMode.READ_WRITE, 0, fileSize);
-            if (fileSize <= DEFAULT_BUFFER_SIZE) {// 如果文件不大,可以选择一次性读取到内存
-                mbbIn.get(buff, 0, (int) fileSize);
-                mbbOut.put(buff, 0, (int) fileSize);
-            } else {// 如果文件内容很大,可以循环读取,计算应该读取多少次
-                long cycle = fileSize / DEFAULT_BUFFER_SIZE;
-                int mode = (int) (fileSize % DEFAULT_BUFFER_SIZE);
-                for (int i = 0; i < cycle; i++) {// 每次读取DEFAULT_BUFFER_SIZE个字节
-                    mbbIn.get(buff, 0, DEFAULT_BUFFER_SIZE);
-                    mbbOut.put(buff, 0, DEFAULT_BUFFER_SIZE);
-                }
-                if (mode > 0) {
-                    buff = new byte[mode];
-                    mbbOut.get(buff, 0, mode);
-                    mbbOut.put(buff, 0, mode);
-                }
+        try(
+        FileInputStream ins = new FileInputStream(src);
+        FileOutputStream out = new FileOutputStream(dest);
+        ){
+            byte[] b = new byte[1024];
+            int n=0;
+            while((n=ins.read(b))!=-1){
+                out.write(b, 0, n);
             }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
             return false;
         }
         return true;
