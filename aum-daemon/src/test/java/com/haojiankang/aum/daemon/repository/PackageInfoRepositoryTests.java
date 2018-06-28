@@ -1,6 +1,6 @@
 package com.haojiankang.aum.daemon.repository;
 
-import com.haojiankang.aum.daemon.po.PackageInfo;
+import com.haojiankang.aum.daemon.model.PackageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

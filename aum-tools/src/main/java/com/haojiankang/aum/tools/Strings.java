@@ -1,24 +1,20 @@
-package com.haojiankang.aum.daemon.utils;
+package com.haojiankang.aum.tools;
 
-import lombok.extern.slf4j.Slf4j;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-@Slf4j
 public class Strings {
-    public static String md5(String str) {
+    public static String md5(String str)throws  IOException,NoSuchAlgorithmException {
         ByteArrayInputStream bis = new ByteArrayInputStream(str.getBytes());
         return md5(bis);
     }
-    public static String md5(InputStream input) {
+    public static String md5(InputStream input)throws  IOException,NoSuchAlgorithmException {
         // 实际返回的为MD5值
         MessageDigest messageDigest = null;
-        try {
             StringBuilder md5StrBuff = new StringBuilder();
             byte[] byteArray = digest(input, "md5");
             for (int i = 0; i < byteArray.length; i++) {
@@ -28,10 +24,7 @@ public class Strings {
                     md5StrBuff.append(Integer.toHexString(0xFF & byteArray[i]));
             }
             return md5StrBuff.toString();
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
-        return null;
+
     }
 
 

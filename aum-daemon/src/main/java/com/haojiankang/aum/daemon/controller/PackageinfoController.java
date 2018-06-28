@@ -1,8 +1,8 @@
 package com.haojiankang.aum.daemon.controller;
 
-import com.haojiankang.aum.daemon.po.PackageInfo;
+import com.haojiankang.aum.daemon.model.PackageInfo;
 import com.haojiankang.aum.daemon.service.PackageInfoService;
-import com.haojiankang.aum.daemon.utils.SSTO;
+import com.haojiankang.aum.daemon.model.SSTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

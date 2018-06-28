@@ -1,16 +1,18 @@
 package com.haojiankang.aum.daemon.service;
 
-import com.haojiankang.aum.daemon.po.AppInfo;
-import com.haojiankang.aum.daemon.po.PackageInfo;
+import com.haojiankang.aum.daemon.model.AppInfo;
+import com.haojiankang.aum.daemon.model.PackageInfo;
 import com.haojiankang.aum.daemon.repository.AppInfoRepository;
 import com.haojiankang.aum.daemon.repository.PackageInfoRepository;
-import com.haojiankang.aum.daemon.utils.FileUtils;
+import com.haojiankang.aum.tools.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class PackageInfoService {
-    private static final String BASE_DIR=FileUtils.getBasePath().getAbsolutePath()+File.separator;
+    private static final String BASE_DIR=new ApplicationHome(PackageInfoService.class).getDir().getAbsolutePath()+File.separator;
     private static final String PKG_DIR=String.format("%s%s%s",BASE_DIR,"package",File.separator);
     private static final String PKG_TMP_DIR=String.format("%s%s%s",PKG_DIR,File.separator,"tmp");
     private static final String UPGRADE_PROGRAM=String.format("%s%s%s%s",BASE_DIR,"ext",File.separator,"upgrade.jar");
@@ -40,10 +42,13 @@ public class PackageInfoService {
     }
 
     public void runUpdate(String appcode,String pointcode){
-        
         AppInfo appinfo= appRep.findByAppcodeAndPointcode(appcode,pointcode);
         List<PackageInfo> pkgList = getPackageList(appcode, pointcode, appinfo);
-        call(appinfo,pkgList);
+        try {
+            call(appinfo, pkgList);
+        }catch (IOException io){
+            log.error(io.getMessage(),io);
+        }
     }
 
     private List<PackageInfo> getPackageList(String appcode, String pointcode, AppInfo appinfo) {
@@ -61,7 +66,7 @@ public class PackageInfoService {
         return pkgList;
     }
 
-    private void call(AppInfo appinfo,List<PackageInfo> pkgList){
+    private void call(AppInfo appinfo,List<PackageInfo> pkgList) throws IOException{
         File argFile = lockFile(appinfo, pkgList);
         File execFile = ready();
         //java -jar 调用 tmp下的jar
@@ -74,7 +79,7 @@ public class PackageInfoService {
         }
     }
 
-    private File ready() {
+    private File ready() throws IOException{
         File upgrade=new File(UPGRADE_PROGRAM);
         File execFile=new File(PKG_TMP_DIR,upgrade.getName());
         execFile.delete();
@@ -82,13 +87,13 @@ public class PackageInfoService {
         return execFile;
     }
 
-    private File lockFile(AppInfo appinfo, List<PackageInfo> pkgList) {
+    private File lockFile(AppInfo appinfo, List<PackageInfo> pkgList) throws IOException {
         StringBuilder args=new StringBuilder();
         args.append(String.format("code:%s,point:%s,basedir:%s,properties:%s,version:",appinfo.getAppCode(),appinfo.getPointCode(),BASE_DIR,appinfo.getProperties()));
         pkgList.stream().forEach(pkg->{
             args.append(String.format("%s,",pkg.getVersion()));
         });
-        File argFile=new File(FileUtils.getBasePath(),UUID.randomUUID().toString()+".uuid");
+        File argFile=new File(new ApplicationHome(PackageInfoService.class).getDir(),UUID.randomUUID().toString()+".uuid");
         FileUtils.writeFile(args.toString(),argFile);
         return argFile;
     }

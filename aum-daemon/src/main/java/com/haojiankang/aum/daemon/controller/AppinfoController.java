@@ -1,8 +1,8 @@
 package com.haojiankang.aum.daemon.controller;
 
-import com.haojiankang.aum.daemon.po.AppInfo;
+import com.haojiankang.aum.daemon.model.AppInfo;
 import com.haojiankang.aum.daemon.service.AppinfoService;
-import com.haojiankang.aum.daemon.utils.SSTO;
+import com.haojiankang.aum.daemon.model.SSTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

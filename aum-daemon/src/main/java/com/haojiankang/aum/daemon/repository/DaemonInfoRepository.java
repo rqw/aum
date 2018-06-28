@@ -1,8 +1,6 @@
 package com.haojiankang.aum.daemon.repository;
 
-import com.haojiankang.aum.daemon.po.DaemonInfo;
-import com.haojiankang.aum.daemon.po.PackageInfo;
-import com.haojiankang.aum.daemon.utils.Maps;
+import com.haojiankang.aum.daemon.model.DaemonInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -14,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 public class DaemonInfoRepository {

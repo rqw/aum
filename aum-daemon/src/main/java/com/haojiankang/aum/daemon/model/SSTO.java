@@ -1,4 +1,4 @@
-package com.haojiankang.aum.daemon.utils;
+package com.haojiankang.aum.daemon.model;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -1,4 +1,4 @@
-package com.haojiankang.aum.daemon.po;
+package com.haojiankang.aum.daemon.model;
 
 import lombok.Data;
 

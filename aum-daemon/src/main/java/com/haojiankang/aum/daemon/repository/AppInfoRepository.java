@@ -1,6 +1,6 @@
 package com.haojiankang.aum.daemon.repository;
 
-import com.haojiankang.aum.daemon.po.AppInfo;
+import com.haojiankang.aum.daemon.model.AppInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

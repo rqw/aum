@@ -1,8 +1,6 @@
 package com.haojiankang.aum.daemon.service;
 
-import com.haojiankang.aum.daemon.po.AppInfo;
-import com.haojiankang.aum.daemon.po.DaemonInfo;
-import com.haojiankang.aum.daemon.repository.AppInfoRepository;
+import com.haojiankang.aum.daemon.model.DaemonInfo;
 import com.haojiankang.aum.daemon.repository.DaemonInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

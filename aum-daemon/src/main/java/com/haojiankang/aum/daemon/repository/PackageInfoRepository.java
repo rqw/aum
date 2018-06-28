@@ -1,7 +1,7 @@
 package com.haojiankang.aum.daemon.repository;
 
-import com.haojiankang.aum.daemon.po.PackageInfo;
-import com.haojiankang.aum.daemon.utils.Maps;
+import com.haojiankang.aum.daemon.model.PackageInfo;
+import com.haojiankang.aum.tools.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.ResultSetExtractor;
