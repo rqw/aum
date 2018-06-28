@@ -38,9 +38,9 @@ public class UpdateCmd implements Cmd {
             throw new RuntimeException("updatecmd args fail!");
         }
         try{
-                        String content = FileUtils.readFileToString(new File(args[1]), System.getProperty("file.encoding"));
-            Pattern compile = Pattern.compile("code:(.*),point:(.*),basedir:(.*),properties:(.*),version:(.*)");
-            Matcher matcher = compile.matcher(content.replace("\r\n",""));
+            String content = FileUtils.readFileToString(new File(args[1]), System.getProperty("file.encoding"));
+            Pattern compile = Pattern.compile("code:(.*),point:(.*),basedir:(.*),properties:([.\r\n]*),version:(.*)");
+            Matcher matcher = compile.matcher(content);
             if(matcher.find()){
                 code=matcher.group(1);
                 point=matcher.group(2);
