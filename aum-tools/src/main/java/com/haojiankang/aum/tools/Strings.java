@@ -1,11 +1,17 @@
 package com.haojiankang.aum.tools;
 
 
+import org.xidea.lite.LiteCompiler;
+import org.xidea.lite.LiteTemplate;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Strings {
     public static String md5(String str)throws  IOException,NoSuchAlgorithmException {
@@ -26,8 +32,6 @@ public class Strings {
             return md5StrBuff.toString();
 
     }
-
-
     /**
      * 对输入流进行散列运算, 支持md5与sha1算法.
      *
@@ -49,4 +53,14 @@ public class Strings {
         } while (read > -1);
         return messageDigest.digest();
     }
+    public static String compile(String target,Map<String,String> context){
+        for(Map.Entry<String,String> item:context.entrySet()){
+            String k="{"+item.getKey()+"}";
+            if(target.contains(k)){
+                target=target.replace(k,item.getValue());
+            }
+        }
+        return target;
+    }
+
 }

@@ -9,14 +9,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
-public class ConnectionManager {
+public class DbUtils {
     @Data
     public static class Info {
         private String url;
         private String username;
         private String password;
         private String driverclass;
-        private String dbtype;
+        private String dbtype="oracle";
     }
 
     public static Connection getConnection(Info info) throws SQLException, ClassNotFoundException {
@@ -29,5 +29,9 @@ public class ConnectionManager {
             default:
                 return DriverManager.getConnection(info.getUrl(), info.getUsername(), info.getPassword());
         }
+    }
+    public static Connection getConnection(String info) throws IOException,SQLException, ClassNotFoundException {
+        Info jinfo = JsonUtils.parse(info, Info.class);
+        return getConnection(jinfo);
     }
 }

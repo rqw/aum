@@ -88,6 +88,9 @@ public class UpdateCmd implements Cmd {
     }
 
     public void batchCmd(List<File> listFile) throws IOException {
+        //修改上下文
+        DirectiveParser.changeContext(env);
+
         for(File dataFile:listFile){
             File cmdFile=new File(dataFile,"data"+File.separator+"command.list");
             if(cmdFile.exists()){

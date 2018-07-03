@@ -12,8 +12,8 @@
     <dependencies>
         <dependency>
             <groupId>org.xidea</groupId>
-            <artifactId>jsel</artifactId>
-            <version>0.1.0</version>
+            <artifactId>lite</artifactId>
+            <version>3.1.15</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
