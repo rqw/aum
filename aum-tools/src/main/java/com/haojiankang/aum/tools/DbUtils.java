@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DbUtils {
@@ -18,7 +20,11 @@ public class DbUtils {
         private String driverclass;
         private String dbtype="oracle";
     }
-
+    @Data
+    public static class SqlScript{
+        private String sql;
+        private String type;
+    }
     public static Connection getConnection(Info info) throws SQLException, ClassNotFoundException {
         Connection conn = null;
         Class.forName(info.getDriverclass());
@@ -33,5 +39,15 @@ public class DbUtils {
     public static Connection getConnection(String info) throws IOException,SQLException, ClassNotFoundException {
         Info jinfo = JsonUtils.parse(info, Info.class);
         return getConnection(jinfo);
+    }
+
+    public static List<SqlScript> resolve(List<String> sqlscript){
+        List<SqlScript> list=new ArrayList<>();
+
+
+        return list;
+    }
+    public static void execute(Connection connection,List<SqlScript> sqlList){
+
     }
 }
