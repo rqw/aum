@@ -1,0 +1,1 @@
+sc stop aum-daemon

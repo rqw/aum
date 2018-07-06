@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 
 @Slf4j
 public class UpdateCmd implements Cmd {
-    private String[] args;
     private String code;
     private String point;
     private String basedir;
@@ -26,11 +25,6 @@ public class UpdateCmd implements Cmd {
     private String properties;
     private Map<String,String> env;
     private String[] versions;
-    public UpdateCmd(String[] args){
-        this.args=args;
-        resolve(args);
-    }
-
     private void resolve(String[] args) {
         env=new HashMap<>();
         if(args.length!=2&&args[1]==null){
@@ -58,8 +52,9 @@ public class UpdateCmd implements Cmd {
 }
 
     @Override
-    public boolean exec()  {
+    public boolean exec(String[] args)  {
         try{
+            resolve(args);
             List<File> listFile=new ArrayList<>();
             if(versions.length==1){
                 unpackAndResolve(listFile,versions[0]);
@@ -92,6 +87,7 @@ public class UpdateCmd implements Cmd {
         DirectiveParser.changeContext(env);
 
         for(File dataFile:listFile){
+            env.put("pkg.dir",new File(dataFile,"data").getAbsolutePath());
             File cmdFile=new File(dataFile,"data"+File.separator+"command.list");
             if(cmdFile.exists()){
                 List<String> cmdlist = FileUtils.readFileToList(cmdFile, "utf-8");

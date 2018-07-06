@@ -62,5 +62,14 @@ public class Strings {
         }
         return target;
     }
-
+    public static void main(String[] args){
+        String reg="\\{([^\\{\\}]+)\\}";
+        Pattern p=Pattern.compile(reg   );
+        Matcher matcher = p.matcher("我的名字是{name},今年{age}");
+        if(matcher.find()){
+            for(int i=0,cnt=matcher.groupCount();i<cnt;i++){
+                System.out.println(matcher.group(i));
+            }
+        }
+    }
 }

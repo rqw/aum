@@ -1,5 +1,5 @@
 package com.haojiankang.aum.exec.api;
 @FunctionalInterface
 public interface Cmd {
-    public boolean exec();
+    public boolean exec(String[] args);
 }

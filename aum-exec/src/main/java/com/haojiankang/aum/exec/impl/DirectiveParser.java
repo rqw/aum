@@ -11,8 +11,10 @@ public class DirectiveParser {
     private  static final DirectiveParser PARSER=new DirectiveParser();
     private Map<String,Directive> directiveMap=new HashMap<>();
     private DirectiveParser(){
-        directiveMap.put("fs",new FileSystemDirective());
-        directiveMap.put("db",new DataBaseDirective());
+        FileSystemDirective fs = new FileSystemDirective();
+        DataBaseDirective db = new DataBaseDirective();
+        directiveMap.put(fs.prefix(),fs);
+        directiveMap.put(db.prefix(),db);
     }
     public static void changeContext(Map<String,String> context){
         PARSER.directiveMap.forEach((k,v)->{
