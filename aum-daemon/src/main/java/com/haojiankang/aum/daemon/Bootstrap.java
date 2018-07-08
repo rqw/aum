@@ -18,7 +18,9 @@ public class Bootstrap extends JarLauncher {
             try {
                 createMainMethodRunner(mainClass, args, classLoader).run();
             }
-            catch(Exception ex) {}
+            catch(Exception ex) {
+                ex.printStackTrace();
+            }
         });
         runnerThread.setContextClassLoader(classLoader);
         runnerThread.setName(Thread.currentThread().getName());
@@ -43,6 +45,7 @@ public class Bootstrap extends JarLauncher {
 
     public static void stop (String []args) {
         try {
+            System.exit(0);
             if (bootstrap != null) {
                 bootstrap.launch(args, bootstrap.getMainClass(), classLoader, true);
                 bootstrap = null;
