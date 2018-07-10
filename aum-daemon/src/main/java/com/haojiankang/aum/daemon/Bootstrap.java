@@ -3,9 +3,7 @@ package com.haojiankang.aum.daemon;
 import org.springframework.boot.loader.JarLauncher;
 import org.springframework.boot.loader.jar.JarFile;
 
-/**
- * Created by zanutto on 2/23/15.
- */
+
 public class Bootstrap extends JarLauncher {
 
     private static ClassLoader classLoader = null;
@@ -17,8 +15,7 @@ public class Bootstrap extends JarLauncher {
         Thread runnerThread = new Thread(() -> {
             try {
                 createMainMethodRunner(mainClass, args, classLoader).run();
-            }
-            catch(Exception ex) {
+            }catch(Exception ex) {
                 ex.printStackTrace();
             }
         });
@@ -46,11 +43,11 @@ public class Bootstrap extends JarLauncher {
     public static void stop (String []args) {
         try {
             System.exit(0);
-            if (bootstrap != null) {
-                bootstrap.launch(args, bootstrap.getMainClass(), classLoader, true);
-                bootstrap = null;
-                classLoader = null;
-            }
+//            if (bootstrap != null) {
+//                bootstrap.launch(args, bootstrap.getMainClass(), classLoader, true);
+//                bootstrap = null;
+//                classLoader = null;
+//            }
         }
         catch (Exception ex) {
             ex.printStackTrace();
@@ -60,6 +57,7 @@ public class Bootstrap extends JarLauncher {
 
     public static void main(String[] args) {
         String mode = args != null && args.length > 0 ? args[0] : null;
+        System.out.println("bootstrap args:{}"+String.join(",",args));
         if ("start".equals(mode)) {
             Bootstrap.start(args);
         }

@@ -40,6 +40,7 @@ public class DaemonConf {
             api.getProperties().put("shutdown", shutdown);
             Map<String,String> master=new HashMap<>();
             master.put("driverclass",environment.getProperty("spring.datasource.classname")) ;
+            master.put("dbtype","sqlite") ;
             master.put("url",String.format(environment.getProperty("spring.datasource.url"),new ApplicationHome(DaemonConf.class).getDir().getAbsolutePath(), File.separator)) ;
             api.getProperties().put("master",JsonUtils.stringify(master));
             api.register();

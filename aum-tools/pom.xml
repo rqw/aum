@@ -8,7 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <artifactId>aum-tools</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.xidea</groupId>
@@ -21,22 +21,6 @@
             <version>1.16.10</version>
         </dependency>
     </dependencies>
-    <artifactId>aum-tools</artifactId>
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
-    <profiles>
-        <profile>
-            <id>jdk1.8</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-                <jdk>${java.version}</jdk>
-            </activation>
-            <properties>
-                <maven.compiler.source>${java.version}</maven.compiler.source>
-                <maven.compiler.target>${java.version}</maven.compiler.target>
-                <maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>
-            </properties>
-        </profile>
-    </profiles>
+
+
 </project>

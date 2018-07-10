@@ -14,4 +14,62 @@
         <module>aum-api</module>
         <module>aum-tools</module>
     </modules>
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>user-snapshot</id>
+            <name>User Porject Snapshot</name>
+            <url>http://101.201.51.219:8081/nexus/content/repositories/snapshots/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
+        <repository>
+            <id>user-release</id>
+            <name>User Porject Release</name>
+            <url>http://101.201.51.219:8081/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>jdk1.8</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <jdk>${java.version}</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>${java.version}</maven.compiler.source>
+                <maven.compiler.target>${java.version}</maven.compiler.target>
+                <maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>
+            </properties>
+        </profile>
+    </profiles>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <defaultGoal>compile</defaultGoal>
+    </build>
 </project>

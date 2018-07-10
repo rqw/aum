@@ -96,6 +96,7 @@
         <java.version>1.8</java.version>
         <start-class>com.haojiankang.aum.daemon.AumDaemonApplication</start-class>
         <version.swagger>2.8.0</version.swagger>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
 
@@ -136,4 +137,17 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>user-snapshot</id>
+            <name>User Porject Snapshot</name>
+            <url>http://101.201.51.219:8081/nexus/content/repositories/snapshots/</url>
+            <uniqueVersion>true</uniqueVersion>
+        </snapshotRepository>
+        <repository>
+            <id>user-release</id>
+            <name>User Porject Release</name>
+            <url>http://101.201.51.219:8081/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 </project>

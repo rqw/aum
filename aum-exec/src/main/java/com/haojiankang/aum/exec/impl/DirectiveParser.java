@@ -31,11 +31,11 @@ public class DirectiveParser {
         directiveMap.put(name,directive);
     }
     public boolean resolveExec(String commond){
-        Pattern compile = Pattern.compile("([~@]*)@");
+        Pattern compile = Pattern.compile("([^@]*)@");
         Matcher matcher = compile.matcher(commond);
         String dname=null;
         if(matcher.find()) {
-            dname = matcher.group(0);
+            dname = matcher.group(1);
             return directiveMap.get(dname).execute(commond);
         }else{
             throw new RuntimeException(String.format("cmd resolveExec fail,not support cmd:%s",commond));

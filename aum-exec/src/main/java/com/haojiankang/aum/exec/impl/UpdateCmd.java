@@ -32,7 +32,8 @@ public class UpdateCmd implements Cmd {
         }
         try{
             String content = FileUtils.readFileToString(new File(args[1]), System.getProperty("file.encoding"));
-            Pattern compile = Pattern.compile("code:(.*),point:(.*),basedir:(.*),properties:([.\r\n]*),version:(.*)");
+            Pattern compile = Pattern.compile("code:(.*),point:(.*),basedir:(.*),properties:([\\s\\S]*),version:(.*)");
+            log.debug("uuidfile content:{}",content);
             Matcher matcher = compile.matcher(content);
             if(matcher.find()){
                 code=matcher.group(1);

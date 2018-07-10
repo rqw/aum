@@ -10,8 +10,8 @@ public class FileUtils {
     private static final int DEFAULT_BUFFER_SIZE = 1024 * 1024 * 10;// 10M
 
     public static void writeFile(String content, File targetFile) throws IOException {
-        if (!targetFile.exists()) {
-            targetFile.mkdirs();
+        if (!targetFile.getParentFile().exists()) {
+            targetFile.getParentFile().mkdirs();
         }
         try (
                 FileOutputStream fo = new FileOutputStream(targetFile);
@@ -24,8 +24,8 @@ public class FileUtils {
     }
 
     public static void writeFile(byte[] bs, File targetFile) throws IOException {
-        if (!targetFile.exists()) {
-            targetFile.mkdirs();
+        if (!targetFile.getParentFile().exists()) {
+            targetFile.getParentFile().mkdirs();
         }
         try (FileOutputStream out = new FileOutputStream(targetFile);) {
             out.write(bs);

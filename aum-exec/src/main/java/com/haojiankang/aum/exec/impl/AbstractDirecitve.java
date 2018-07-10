@@ -32,7 +32,7 @@ public abstract class AbstractDirecitve implements Directive {
     }
 
     protected boolean  resolveAndExec(String argline) throws Throwable{
-        Pattern compile = Pattern.compile(prefix()+"@(.*)\\s+(.*)");
+        Pattern compile = Pattern.compile(prefix()+"@(\\S*)\\s+(.*)");
         Matcher matcher = compile.matcher(argline);
         String commond,args;
         if(matcher.find()){
