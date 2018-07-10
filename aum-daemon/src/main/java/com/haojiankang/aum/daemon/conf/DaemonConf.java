@@ -2,6 +2,7 @@ package com.haojiankang.aum.daemon.conf;
 
 import com.haojiankang.aum.api.AumApi;
 import com.haojiankang.aum.api.utils.JsonUtils;
+import com.haojiankang.aum.api.utils.OsUtils;
 import com.haojiankang.aum.daemon.service.DaemoninfoService;
 import com.haojiankang.aum.tools.FileUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class DaemonConf {
     CommandLineRunner registerRunner() {
         return args -> {
             String appcode = environment.getProperty("aum.daemon.appcode");
-            String pointcode = environment.getProperty("aum.daemon.pointcode");
+            String pointcode = environment.getProperty("aum.daemon.pointcode",OsUtils.getLocalMac());
             String startup = environment.getProperty("aum.daemon.startup");
             String shutdown = environment.getProperty("aum.daemon.shutdown");
             AumApi api = AumApi.api();
