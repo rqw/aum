@@ -1,7 +1,12 @@
 #端口默认为md5(us.haojiankang.com)<<48>>48
 server:
   port: 4437
-  url: http://127.0.0.1:${server.port}
+vcc:
+  host: http://192.168.99.189:8080/vcc
+  callback: http://192.168.8.205:${server.port}
+  url:
+    checkforupdate: /information/listAll
+    appregister: /information/register
 spring:
   datasource:
     url: jdbc:sqlite:%s%sus.db
@@ -16,7 +21,5 @@ aum:
   daemon:
       version: 1.0.0
       name: aum-daemon
-      appcode: aum-daemon
-      startup: sc start aum-daemon
       shutdown: sc stop aum-daemon
       exec: cmd /c start cmd /c "java -jar %s update %s >> %supgrade.log"

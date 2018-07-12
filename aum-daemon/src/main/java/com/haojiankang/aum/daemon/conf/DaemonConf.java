@@ -28,7 +28,7 @@ public class DaemonConf {
     @Bean
     CommandLineRunner registerRunner() {
         return args -> {
-            String appcode = environment.getProperty("aum.daemon.appcode");
+            String appcode = environment.getProperty("aum.daemon.appcode","aum-daemon");
             String pointcode = environment.getProperty("aum.daemon.pointcode",OsUtils.getLocalMac());
             String startup = environment.getProperty("aum.daemon.startup");
             String shutdown = environment.getProperty("aum.daemon.shutdown");

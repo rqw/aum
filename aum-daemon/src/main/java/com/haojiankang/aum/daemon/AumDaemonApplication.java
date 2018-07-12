@@ -3,9 +3,12 @@ package com.haojiankang.aum.daemon;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-@SpringBootApplication
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.scheduling.annotation.EnableScheduling;
 @Slf4j
+@SpringBootApplication
+@EnableScheduling
+@EnableCaching
 public class AumDaemonApplication {
 
     public static void main(String[] args) {
