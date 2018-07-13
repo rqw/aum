@@ -1,6 +1,5 @@
 package com.haojiankang.aum.daemon.task;
 
-import com.haojiankang.aum.api.utils.HttpUtils;
 import com.haojiankang.aum.daemon.model.AppInfo;
 import com.haojiankang.aum.daemon.model.SSTO;
 import com.haojiankang.aum.daemon.service.AppinfoService;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @Slf4j

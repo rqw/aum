@@ -1,10 +1,7 @@
 package com.haojiankang.aum.daemon.conf;
 
 import com.haojiankang.aum.api.AumApi;
-import com.haojiankang.aum.api.utils.JsonUtils;
-import com.haojiankang.aum.api.utils.OsUtils;
 import com.haojiankang.aum.daemon.service.DaemoninfoService;
-import com.haojiankang.aum.tools.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

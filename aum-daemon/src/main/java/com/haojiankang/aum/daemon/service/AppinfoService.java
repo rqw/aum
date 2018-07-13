@@ -1,18 +1,15 @@
 package com.haojiankang.aum.daemon.service;
 
-import com.haojiankang.aum.api.utils.HttpUtils;
 import com.haojiankang.aum.daemon.model.AppInfo;
 import com.haojiankang.aum.daemon.model.SSTO;
 import com.haojiankang.aum.daemon.repository.AppInfoRepository;
 import com.haojiankang.aum.tools.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 @Service

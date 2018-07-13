@@ -1,15 +1,15 @@
 package com.haojiankang.aum.api;
 
-import com.haojiankang.aum.api.utils.HttpUtils;
-import com.haojiankang.aum.api.utils.JsonUtils;
-import com.haojiankang.aum.api.utils.OsUtils;
+import com.haojiankang.aum.tools.HttpUtils;
+import com.haojiankang.aum.tools.JsonUtils;
+import com.haojiankang.aum.tools.OsUtils;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
+
 @Getter
 @Setter
 public class AumApi {

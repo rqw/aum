@@ -1,4 +1,4 @@
-package com.haojiankang.aum.api.utils;
+package com.haojiankang.aum.tools;
 
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
