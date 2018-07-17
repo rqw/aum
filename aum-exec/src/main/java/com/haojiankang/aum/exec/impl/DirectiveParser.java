@@ -41,5 +41,10 @@ public class DirectiveParser {
             throw new RuntimeException(String.format("cmd resolveExec fail,not support cmd:%s",commond));
         }
     }
-
+    public static  void main(String[] args){
+        Map<String,String> content=new HashMap<>();
+        content.put("hid","{'username':'hid','password':'hid','driverclass':'oracle.jdbc.driver.OracleDriver','url':'jdbc:oracle:thin:@192.168.191.51:1521:orcl'}");
+        DirectiveParser.PARSER.changeContext(content);
+        DirectiveParser.PARSER.resolveExec("db@exp hid TABLE HJK_SYS_USER");
+    }
 }
