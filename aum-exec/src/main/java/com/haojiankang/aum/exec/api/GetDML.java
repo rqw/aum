@@ -6,5 +6,5 @@ import java.sql.SQLException;
 
 @FunctionalInterface
 public interface GetDML {
-    void gain(Connection connection, OutputStream os, String... names)throws SQLException;;
+    void gain(Connection connection, OutputStream os, String... names)throws SQLException;
 }

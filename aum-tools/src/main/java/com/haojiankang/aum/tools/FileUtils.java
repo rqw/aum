@@ -85,7 +85,7 @@ public class FileUtils {
      * @return 是否成功
      */
     public static void copyFile(File src, File dest) throws IOException {
-        if (null == src && !dest.getParentFile().exists() && !dest.getParentFile().mkdirs())
+        if (null == src || !dest.getParentFile().exists() && !dest.getParentFile().mkdirs())
             return;
         if (src.isDirectory()) {
             File[] files = src.listFiles();
@@ -95,17 +95,52 @@ public class FileUtils {
         } else {
             if (dest.exists())
                 delFile(dest);
-            try (FileInputStream ins = new FileInputStream(src);
-                 FileOutputStream out = new FileOutputStream(dest);) {
-                byte[] b = new byte[1024];
-                int n = 0;
-                while ((n = ins.read(b)) != -1) {
-                    out.write(b, 0, n);
-                }
-            }
+            copyStream(src, dest);
         }
     }
 
+    /**
+     * 拷贝文件
+     *
+     * @param src  原文件
+     * @param dest 目的文件
+     * @return 是否成功
+     */
+    public static void copyFile(File src, File dest,File bak,Writer writer) throws IOException {
+
+        if (null == src || !dest.getParentFile().exists() && !dest.getParentFile().mkdirs())
+            return;
+        if (src.isDirectory()) {
+            File[] files = src.listFiles();
+            for (File sf : files) {
+                copyFile(sf, new File(dest, sf.getName()), new File(bak, sf.getName()),writer);
+            }
+        } else {
+            if (dest.exists()){
+                copyFile(dest,bak);
+                delFile(dest);
+                writer.write("M\t");
+                writer.write(dest.getAbsolutePath());
+                writer.write("\r\n");
+            }else{
+                writer.write("I\t");
+                writer.write(dest.getAbsolutePath());
+                writer.write("\r\n");
+            }
+            copyStream(src, dest);
+        }
+    }
+
+    private static void copyStream(File src, File dest) throws IOException {
+        try (FileInputStream ins = new FileInputStream(src);
+             FileOutputStream out = new FileOutputStream(dest);) {
+            byte[] b = new byte[1024];
+            int n = 0;
+            while ((n = ins.read(b)) != -1) {
+                out.write(b, 0, n);
+            }
+        }
+    }
     public static boolean delFile(File file) {
         if (!file.exists())
             return false;
@@ -116,6 +151,22 @@ public class FileUtils {
             }
         }
         return file.delete();
+    }
+    public static void delFile(File file,File bak,Writer writer) throws  IOException {
+        if (!file.exists())
+            return;
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File f : files) {
+                delFile(f,new File(bak,f.getName()),writer);
+            }
+        }else{
+            writer.write("D\t");
+            writer.write(file.getAbsolutePath());
+            writer.write("\r\n");
+            copyFile(file,bak);
+            file.delete();
+        }
     }
 
 }

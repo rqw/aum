@@ -89,6 +89,7 @@ public class UpdateCmd implements Cmd {
 
         for(File dataFile:listFile){
             env.put("pkg.dir",new File(dataFile,"data").getAbsolutePath());
+            env.put("bak.dir",new File(basedir, "bak" + dataFile.getName()){{mkdirs();}}.getAbsolutePath());
             File cmdFile=new File(dataFile,"data"+File.separator+"command.list");
             if(cmdFile.exists()){
                 List<String> cmdlist = FileUtils.readFileToList(cmdFile, "utf-8");

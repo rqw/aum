@@ -27,7 +27,7 @@ public abstract class AbstractDirecitve implements Directive {
         try{
             return resolveAndExec(argline);
         }catch(Throwable e){
-            throw new RuntimeException(e.getMessage(),e);
+            throw new RuntimeException(e);
         }
     }
 
