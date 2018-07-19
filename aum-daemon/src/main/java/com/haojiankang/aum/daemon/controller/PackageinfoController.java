@@ -45,6 +45,15 @@ public class PackageinfoController {
         }
         return SSTO.ok("upgrade success!");
     }
-
+    @ApiOperation(value = "升级包信息列表",notes="查询全部升级包信息列表数据")
+    @RequestMapping(method = RequestMethod.GET)
+    public SSTO<?> list(){
+        try{
+            return SSTO.ok(null,service.listAll());
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+            return SSTO.not(e.getMessage());
+        }
+    }
 
 }

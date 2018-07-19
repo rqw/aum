@@ -3,6 +3,7 @@ package com.haojiankang.aum.daemon.service;
 import com.haojiankang.aum.daemon.model.AppInfo;
 import com.haojiankang.aum.daemon.model.SSTO;
 import com.haojiankang.aum.daemon.repository.AppInfoRepository;
+import com.haojiankang.aum.tools.HttpUtils;
 import com.haojiankang.aum.tools.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class AppinfoService {
             info.setId(null);
             repository.create(info);
         }
+        info.setStatus(repository.findById(info.getId()).getStatus());
         try{
             String post = HttpUtils.post(host + appregister, HttpUtils.formBody("pointCode", info.getPointCode(), "appCode", info.getAppCode(), "version", info.getVersion(), "url", environment.getProperty("vcc.callback")), null);
             SSTO ssto = JsonUtils.parse(post, SSTO.class);

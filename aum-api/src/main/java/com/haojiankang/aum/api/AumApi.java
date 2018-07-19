@@ -5,6 +5,7 @@ import com.haojiankang.aum.tools.JsonUtils;
 import com.haojiankang.aum.tools.OsUtils;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,7 +30,18 @@ public class AumApi {
     }
     public boolean register() throws IOException {
         Map<String,String> bodys=new HashMap<>();
-        HttpUtils.post(daemonUrl, HttpUtils.formBody("appCode",appCode,"pointCode",pointCode,"version",version,"properties",JsonUtils.stringify(properties)), null);
+        String post = HttpUtils.post(daemonUrl, HttpUtils.formBody("appCode", appCode, "pointCode", pointCode, "version", version, "properties", JsonUtils.stringify(properties)), null);
+        Map data = JsonUtils.parse(post, Map.class);
+        if(data.get("data")!=null){
+            Map d= (Map)data.get("data");
+            if(d.get("status")!=null){
+                if(StringUtils.equals(d.get("status").toString(),"0")){
+                    //当前应用处于非正常状态
+                    System.exit(0);
+                    System.out.println("The current application is in an abnormal state, please check and resolve the update service before starting");
+                }
+            }
+        }
         return true;
     }
 

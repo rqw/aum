@@ -97,5 +97,7 @@ public class PackageInfoService {
         FileUtils.writeFile(args.toString(),argFile);
         return argFile;
     }
-
+    public List<PackageInfo> listAll(){
+        return pkgRep.findAll();
+    }
 }

@@ -29,4 +29,14 @@ public class AppinfoController {
         }
         return SSTO.ok("register success!",info);
     }
+    @ApiOperation(value = "应用信息列表",notes="查询全部应用信息列表数据")
+    @RequestMapping(method = RequestMethod.GET)
+    public SSTO<?> list(){
+        try{
+            return SSTO.ok(null,service.listAll());
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+            return SSTO.not(e.getMessage());
+        }
+    }
 }

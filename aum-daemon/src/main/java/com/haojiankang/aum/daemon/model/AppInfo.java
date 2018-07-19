@@ -17,4 +17,6 @@ public class AppInfo {
     private String properties;
     @ApiModelProperty(value="当前版本",example="version",required = true)
     private String version;
+    @ApiModelProperty(value="当前应用状态（1-正常,0-异常）",example="1",required = true)
+    private String status;
 }
