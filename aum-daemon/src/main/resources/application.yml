@@ -21,5 +21,7 @@ aum:
   daemon:
       version: 1.0.0
       name: aum-daemon
+      appcode: aum-daemon
+      startup: sc start aum-daemon
       shutdown: sc stop aum-daemon
       exec: cmd /c start cmd /c "java -jar %s update %s >> %supgrade.log"

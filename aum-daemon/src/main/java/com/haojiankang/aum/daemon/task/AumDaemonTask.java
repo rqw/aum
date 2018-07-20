@@ -3,6 +3,7 @@ package com.haojiankang.aum.daemon.task;
 import com.haojiankang.aum.daemon.model.AppInfo;
 import com.haojiankang.aum.daemon.model.SSTO;
 import com.haojiankang.aum.daemon.service.AppinfoService;
+import com.haojiankang.aum.tools.HttpUtils;
 import com.haojiankang.aum.tools.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

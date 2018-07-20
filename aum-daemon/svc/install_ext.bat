@@ -1,3 +1,4 @@
+@echo off
 SET DAEMON_HOME=%CD%\..
 SET DAEMON_LOGS=%DAEMON_HOME%\logs
 SET SERVICE_NAME=aum-daemon
