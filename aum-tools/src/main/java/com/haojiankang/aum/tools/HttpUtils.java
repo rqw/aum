@@ -1,6 +1,7 @@
 package com.haojiankang.aum.tools;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -163,6 +164,24 @@ public class HttpUtils {
             options.put("response.headers", response.getAllHeaders());
             return EntityUtils.toString(response.getEntity(),
                     Charset.forName(options.get("charset.response").toString()));
+        } finally {
+        }
+
+    }
+    public static HttpResponse requestResponse(String url, StringEntity body, Map<String, String> headers,Map<String, Object> options) throws ClientProtocolException, IOException {
+        HttpUriRequest request = null;
+        if (options == null) {
+            options = new HashMap<>();
+        }
+        // 检查options是否合法并设定默认值
+        checkOptionsAndSettingDefaultValue(options);
+        // 构建请求实体
+        request = builderRequest(url, body, headers, options, request);
+
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            CloseableHttpResponse response = client.execute(request);
+            options.put("response.headers", response.getAllHeaders());
+            return response;
         } finally {
         }
 

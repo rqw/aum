@@ -55,5 +55,16 @@ public class PackageinfoController {
             return SSTO.not(e.getMessage());
         }
     }
+    @ApiOperation(value = "解锁",notes="")
+    @RequestMapping(value="unlock",method = RequestMethod.GET)
+    public SSTO<?> unlock(){
+        try{
+            service.UPDATE_LOCK=false;
+            return SSTO.ok(null);
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+            return SSTO.not(e.getMessage());
+        }
+    }
 
 }

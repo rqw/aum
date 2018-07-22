@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +26,7 @@ public class PackageInfoService {
     private static final String PKG_DIR=String.format("%s%s%s",BASE_DIR,"package",File.separator);
     private static final String PKG_TMP_DIR=String.format("%s%s%s",PKG_DIR,File.separator,"tmp");
     private static final String UPGRADE_PROGRAM=String.format("%s%s%s%s",BASE_DIR,"ext",File.separator,"upgrade.jar");
+    public static volatile boolean UPDATE_LOCK=false;
     @Autowired
     private PackageInfoRepository pkgRep;
     @Autowired
@@ -40,18 +42,28 @@ public class PackageInfoService {
             FileUtils.writeFile(bytes,new File(PKG_DIR,info.getAppcode()+File.separator+info.getPointcode()),info.getVersion());
         }
     }
-
+    public void savePkg(PackageInfo info, InputStream ins ) throws  Exception{
+        PackageInfo pkg = pkgRep.findById(info.getId());
+        if(pkg==null){
+            pkgRep.create(pkg);
+        }else{
+            info.setUploadtime(new Date());
+            pkgRep.update(pkg);
+        }
+        FileUtils.writeFile(ins,new File(PKG_DIR,info.getAppcode()+File.separator+info.getPointcode()),info.getVersion());
+    }
     public void runUpdate(String appcode,String pointcode){
         AppInfo appinfo= appRep.findByAppcodeAndPointcode(appcode,pointcode);
         List<PackageInfo> pkgList = getPackageList(appcode, pointcode, appinfo);
         try {
             call(appinfo, pkgList);
-        }catch (IOException io){
-            log.error(io.getMessage(),io);
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+            throw new RuntimeException(e.getMessage(),e);
         }
     }
 
-    private List<PackageInfo> getPackageList(String appcode, String pointcode, AppInfo appinfo) {
+    public List<PackageInfo> getPackageList(String appcode, String pointcode, AppInfo appinfo) {
         PackageInfo query=new PackageInfo();
         query.setAppcode(appcode);
         query.setPointcode(pointcode);
@@ -73,7 +85,11 @@ public class PackageInfoService {
         try{
             String cmd=String.format(env.getProperty("aum.daemon.exec"),execFile.getAbsolutePath(),argFile.getAbsolutePath(),BASE_DIR);
             log.debug("run cmd:{}",cmd);
-            Runtime.getRuntime().exec(cmd);
+            if(!UPDATE_LOCK){
+                UPDATE_LOCK=true;
+                Runtime.getRuntime().exec(cmd);
+            }
+
         }catch (Exception e){
             log.error(e.getMessage(),e);
         }

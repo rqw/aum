@@ -2,6 +2,7 @@ package com.haojiankang.aum.exec.impl;
 
 import com.haojiankang.aum.exec.api.Cmd;
 import com.haojiankang.aum.tools.FileUtils;
+import com.haojiankang.aum.tools.HttpUtils;
 import com.haojiankang.aum.tools.JsonUtils;
 import com.haojiankang.aum.tools.ProcessUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +75,8 @@ public class UpdateCmd implements Cmd {
             batchCmd(mapFile);
             //修改应用状态为升级完成
             DaemonService.markEnable(code, point);
+            //
+            HttpUtils.get("http://localhost:4437/us/packageinfo/unlock",null);
             //启动服务
             ProcessUtils.exec(env.get("startup"));
             //删除参数文件
