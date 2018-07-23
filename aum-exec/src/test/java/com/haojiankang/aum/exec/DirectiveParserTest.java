@@ -6,9 +6,9 @@ import org.junit.Test;
 import org.zeroturnaround.zip.ZipUtil;
 
 import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 
 public class DirectiveParserTest {
     @Test
@@ -31,14 +31,39 @@ public class DirectiveParserTest {
     }
     @Test
     public void testCreatePkg() throws Exception{
+        List<String> list=new ArrayList<>();
+        list.add("1.0.1");
+        list.add("1.0.2");
+        list.add("1.0.3");
+        list.add("1.0.4");
+        list.add("1.0.5");
+        list.add("1.0.6");
+        list.add("1.0.7");
+        list.add("1.0.8");
+        list.add("1.0.9");
+        list.add("1.0.10");
+        list.add("1.0.11");
+        list.add("1.0.12");
+        list.add("1.0.13");
+        list.add("1.0.14");
+        list.add("1.0.15");
+        list.add("1.0.16");
+        list.add("1.0.17");
+        for(String version:list){
+            createPkg(version);
+        }
+    }
+
+    private void createPkg(String version) throws IOException, NoSuchAlgorithmException {
         File dir=new File("D:\\update");
-        String version="1.0.0";
         File signFile=new File(dir,"sign.verify");
-        File pack=new File(dir,"pack.zip");
+        File pack=new File(dir,version+".zip");
         File dataFile = new File(dir, "data.zip");
-        ZipUtil.pack(new File(dir,"data"),dataFile);
+        ZipUtil.pack(new File(dir,version+File.separator+"data"),dataFile);
         String md5 = FileUtils.md5(dataFile);
         FileUtils.writeFile(String.format("md5:%s,version:%s,time:%s",md5,version,new Date().toLocaleString()),signFile);
         ZipUtil.packEntries(new File[]{dataFile,signFile},pack);
+        dataFile.delete();
+        signFile.delete();
     }
 }

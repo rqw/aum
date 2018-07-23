@@ -1,5 +1,6 @@
 package com.haojiankang.aum.tools;
 
+import javafx.util.Callback;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -32,6 +33,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 @SuppressWarnings("deprecation")
 public class HttpUtils {
@@ -168,7 +171,8 @@ public class HttpUtils {
         }
 
     }
-    public static HttpResponse requestResponse(String url, StringEntity body, Map<String, String> headers,Map<String, Object> options) throws ClientProtocolException, IOException {
+
+    public static void requestResponse(String url, StringEntity body, Map<String, String> headers, Map<String, Object> options, Consumer<HttpResponse> call) throws ClientProtocolException, IOException {
         HttpUriRequest request = null;
         if (options == null) {
             options = new HashMap<>();
@@ -181,7 +185,7 @@ public class HttpUtils {
         try (CloseableHttpClient client = HttpClients.createDefault()) {
             CloseableHttpResponse response = client.execute(request);
             options.put("response.headers", response.getAllHeaders());
-            return response;
+            call.accept(response);
         } finally {
         }
 

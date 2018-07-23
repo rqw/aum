@@ -45,10 +45,10 @@ public class PackageInfoService {
     public void savePkg(PackageInfo info, InputStream ins ) throws  Exception{
         PackageInfo pkg = pkgRep.findById(info.getId());
         if(pkg==null){
-            pkgRep.create(pkg);
+            pkgRep.create(info);
         }else{
             info.setUploadtime(new Date());
-            pkgRep.update(pkg);
+            pkgRep.update(info);
         }
         FileUtils.writeFile(ins,new File(PKG_DIR,info.getAppcode()+File.separator+info.getPointcode()),info.getVersion());
     }

@@ -79,10 +79,16 @@ public class AumDaemonTask {
                 pkg.setUploadtime(new Date());
                 String fileId = map.get("fileId");
                 try {
-                    pkgService.savePkg(pkg, HttpUtils.requestResponse(host + downfile.replace("{id}", fileId), null, null, null).getEntity().getContent());
-                } catch (Exception e) {
-                    log.error(e.getMessage(), e);
-                }
+                    HttpUtils.requestResponse(host + downfile.replace("{id}", fileId), null, null, null,response->{
+                            try {
+                                pkgService.savePkg(pkg,response.getEntity().getContent());
+                        } catch (Exception e) {
+                            log.error(e.getMessage(), e);
+                        }
+                    });
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
 
             });
 

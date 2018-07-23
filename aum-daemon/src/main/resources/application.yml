@@ -3,7 +3,7 @@ server:
   port: 4437
 vcc:
   host: http://vcc.haojiankang.com
-  callback: http://192.168.8.205:${server.port}
+  callback: http://192.168.8.213:${server.port}
   url:
     checkforupdate: /information/listAll
     appregister: /information/register

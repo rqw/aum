@@ -8,6 +8,7 @@ import com.haojiankang.aum.tools.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -33,16 +34,24 @@ public class AppinfoService {
             repository.create(info);
         }
         info.setStatus(repository.findById(info.getId()).getStatus());
-        try{
-            String post = HttpUtils.post(host + appregister, HttpUtils.formBody("pointCode", info.getPointCode(), "appCode", info.getAppCode(), "version", info.getVersion(), "url", environment.getProperty("vcc.callback")), null);
-            SSTO ssto = JsonUtils.parse(post, SSTO.class);
-            if(ssto!=null){
-                log.debug("register response:{}",ssto);
-            }
-        }catch(IOException  e){
-            log.error(e.getMessage(),e);
-        }
+        notifyVcc(info, host, appregister);
     }
+
+    private void notifyVcc(AppInfo info, String host, String appregister) {
+        new Thread(()->{
+            try{
+                String post = HttpUtils.post(host + appregister, HttpUtils.formBody("pointCode", info.getPointCode(), "appCode", info.getAppCode(), "version", info.getVersion(), "url", environment.getProperty("vcc.callback")), null);
+                SSTO ssto = JsonUtils.parse(post, SSTO.class);
+                if(ssto!=null){
+                    log.debug("register response:{}",ssto);
+                }
+            }catch(IOException e){
+                log.error(e.getMessage(),e);
+            }
+        });
+
+    }
+
     public List<AppInfo> listAll(){
         return repository.findAll();
     }

@@ -60,7 +60,28 @@ public class PackageinfoController {
     public SSTO<?> unlock(){
         try{
             service.UPDATE_LOCK=false;
-            return SSTO.ok(null);
+            return SSTO.ok(service.UPDATE_LOCK);
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+            return SSTO.not(e.getMessage());
+        }
+    }
+    @ApiOperation(value = "加锁",notes="")
+    @RequestMapping(value="lock",method = RequestMethod.GET)
+    public SSTO<?> lock(){
+        try{
+            service.UPDATE_LOCK=true;
+            return SSTO.ok(service.UPDATE_LOCK);
+        }catch(Exception e){
+            log.error(e.getMessage(),e);
+            return SSTO.not(e.getMessage());
+        }
+    }
+    @ApiOperation(value = "查询锁",notes="")
+    @RequestMapping(value="showlock",method = RequestMethod.GET)
+    public SSTO<?> showLock(){
+        try{
+            return SSTO.ok(service.UPDATE_LOCK);
         }catch(Exception e){
             log.error(e.getMessage(),e);
             return SSTO.not(e.getMessage());
