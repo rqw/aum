@@ -32,10 +32,10 @@ public class FileUtils {
         }
     }
     public static void writeFile(InputStream ins, File targetFile, String fileName) throws IOException {
-        if (!targetFile.getParentFile().exists()) {
-            targetFile.getParentFile().mkdirs();
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
         }
-        try (FileOutputStream out = new FileOutputStream(targetFile);) {
+        try (FileOutputStream out = new FileOutputStream(new File(targetFile,fileName));) {
             byte[] b = new byte[1024];
             int n = 0;
             while ((n = ins.read(b)) != -1) {

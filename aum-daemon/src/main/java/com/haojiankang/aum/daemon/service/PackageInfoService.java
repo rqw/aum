@@ -84,9 +84,9 @@ public class PackageInfoService {
         //java -jar 调用 tmp下的jar
         try{
             String cmd=String.format(env.getProperty("aum.daemon.exec"),execFile.getAbsolutePath(),argFile.getAbsolutePath(),BASE_DIR);
-            log.debug("run cmd:{}",cmd);
             if(!UPDATE_LOCK){
                 UPDATE_LOCK=true;
+                log.debug("run lock:{} cmd:{}",UPDATE_LOCK,cmd);
                 Runtime.getRuntime().exec(cmd);
             }
 

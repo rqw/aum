@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +48,7 @@ public class AumDaemonTask {
                 try {
                     //先检查当前是否还有没有升级的安装包，如果存在就先查询出来执行完升级后再检查更新
                     List<PackageInfo> packageList = pkgService.getPackageList(info.getAppCode(), info.getPointCode(), info);
-                    if (packageList == null) {
+                    if (packageList != null&&packageList.size()>0) {
                         pkgService.runUpdate(info.getAppCode(),info.getPointCode());
                     } else {
                         checkAndDownload(host, checkfoudpate, downfile, info);
@@ -76,9 +77,9 @@ public class AumDaemonTask {
                 pkg.setId(map.get("id"));
                 pkg.setPointcode(info.getPointCode());
                 pkg.setVersion(map.get("version"));
-                pkg.setUploadtime(new Date());
                 String fileId = map.get("fileId");
                 try {
+                    pkg.setUploadtime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(map.get("createTime")));
                     HttpUtils.requestResponse(host + downfile.replace("{id}", fileId), null, null, null,response->{
                             try {
                                 pkgService.savePkg(pkg,response.getEntity().getContent());

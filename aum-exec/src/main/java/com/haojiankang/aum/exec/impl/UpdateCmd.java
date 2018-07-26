@@ -30,7 +30,9 @@ public class UpdateCmd implements Cmd {
             throw new RuntimeException("updatecmd args fail!");
         }
         try {
-            String content = FileUtils.readFileToString(new File(args[1]), System.getProperty("file.encoding"));
+            File uuidFile=new File(args[1]);
+            DaemonService.init(uuidFile.getParentFile().getAbsolutePath());
+            String content = FileUtils.readFileToString(uuidFile, System.getProperty("file.encoding"));
             Pattern compile = Pattern.compile("code:(.*),point:(.*),basedir:(.*),properties:([\\s\\S]*),version:(.*)");
             log.debug("uuidfile content:{}", content);
             Matcher matcher = compile.matcher(content);
@@ -75,12 +77,12 @@ public class UpdateCmd implements Cmd {
             batchCmd(mapFile);
             //修改应用状态为升级完成
             DaemonService.markEnable(code, point);
-            //
-            HttpUtils.get("http://localhost:4437/us/packageinfo/unlock",null);
+
             //启动服务
             ProcessUtils.exec(env.get("startup"));
             //删除参数文件
             new File(args[1]).delete();
+            HttpUtils.get("http://localhost:4437/us/packageinfo/unlock",null);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             //升级过程中发生异常，记录异常日志文件，并通知daemon更新升级包的相关信息
@@ -95,7 +97,7 @@ public class UpdateCmd implements Cmd {
             try {
                 File dataFile = item.getValue();
                 env.put("pkg.dir", new File(dataFile, "data").getAbsolutePath());
-                env.put("bak.dir", new File(basedir, "bak" + dataFile.getName()) {{
+                env.put("bak.dir", new File(basedir, "bak" +File.separator+ dataFile.getName()) {{
                     mkdirs();
                 }}.getAbsolutePath());
                 File cmdFile = new File(dataFile, "data" + File.separator + "command.list");
@@ -138,7 +140,7 @@ public class UpdateCmd implements Cmd {
             }
             listFile.put(version, tmpFile);
             //解压data.zip
-            ZipUtil.unpack(new File(tmpFile, "data.zip"), tmpFile);
+            ZipUtil.unpack(new File(tmpFile, "data.zip"), new File(tmpFile,"data"));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new RuntimeException("unpackAndResolve error!", e);

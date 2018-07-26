@@ -7,9 +7,11 @@ import java.sql.Connection;
 import java.sql.Statement;
 
 public class DaemonService {
+    public static void init(String path){
+        SINFO.setUrl("jdbc:sqlite:"+new File(path,"us.db").getAbsolutePath());
+    };
     private static DbUtils.Info SINFO=new DbUtils.Info(){{
         setDriverclass("org.sqlite.JDBC");
-        setUrl("jdbc:sqlite:"+new File(FileUtils.getBasePath().getParent(),"us.db").getAbsolutePath());
     }};
 
     public static void markEnable(String code,String point) throws Exception{
