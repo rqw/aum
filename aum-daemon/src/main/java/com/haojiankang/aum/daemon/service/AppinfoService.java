@@ -40,6 +40,7 @@ public class AppinfoService {
     private void notifyVcc(AppInfo info, String host, String appregister) {
         new Thread(()->{
             try{
+                log.debug("register appinfo:{}",info);
                 String post = HttpUtils.post(host + appregister, HttpUtils.formBody("pointCode", info.getPointCode(), "appCode", info.getAppCode(), "version", info.getVersion(), "url", environment.getProperty("vcc.callback")), null);
                 SSTO ssto = JsonUtils.parse(post, SSTO.class);
                 if(ssto!=null){
@@ -48,7 +49,7 @@ public class AppinfoService {
             }catch(IOException e){
                 log.error(e.getMessage(),e);
             }
-        });
+        }).start();
 
     }
 
