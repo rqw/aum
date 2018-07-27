@@ -25,4 +25,4 @@ aum:
       appcode: aum-daemon
       startup: sc start aum-daemon
       shutdown: sc stop aum-daemon
-      exec: cmd /c start cmd /c "java -jar %s update %s >> %supgrade.log"
+      exec: cmd /c start /b %supdate.bat %s
