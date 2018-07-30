@@ -33,8 +33,8 @@ public class AumDaemonTask {
     @Autowired
     PackageInfoService pkgService;
 
-    //@Scheduled(fixedRate = 3*60*60*1000)
-    @Scheduled(fixedRate = 10 * 1000)
+    //    @Scheduled(fixedRate = 10 * 1000)
+    @Scheduled(fixedRate = 3*60*60*1000)
     @Async
     public void checkForUpdates() {
         //正在执行更新

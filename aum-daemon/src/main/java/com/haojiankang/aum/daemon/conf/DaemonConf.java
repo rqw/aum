@@ -35,7 +35,7 @@ public class DaemonConf {
             api.setAppCode(appcode);
             api.setPointCode(pointcode);
             api.setVersion(service.current().getVersion());
-            api.getProperties().put("app.root", new ApplicationHome(DaemonConf.class).getDir().getAbsolutePath());
+            api.getProperties().put("app.dir", new ApplicationHome(DaemonConf.class).getDir().getAbsolutePath());
             api.getProperties().put("startup", startup);
             api.getProperties().put("shutdown", shutdown);
             Map<String,String> master=new HashMap<>();

@@ -77,7 +77,6 @@ public class UpdateCmd implements Cmd {
             batchCmd(mapFile);
             //修改应用状态为升级完成
             DaemonService.markEnable(code, point);
-
             //启动服务
             ProcessUtils.exec(env.get("startup"));
             //删除参数文件
@@ -110,6 +109,7 @@ public class UpdateCmd implements Cmd {
                     throw new RuntimeException(String.format("cmdfile is not exists,this path:%s", cmdFile.getAbsolutePath()));
                 }
                 DaemonService.changePkgState(code, point, item.getKey(), "1");
+                FileUtils.delFile(dataFile);
             } catch (Exception e) {
                 DaemonService.changePkgState(code, point, item.getKey(), "0");
                 throw new RuntimeException(e.getMessage(), e);
