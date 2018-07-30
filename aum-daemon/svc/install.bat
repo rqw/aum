@@ -1,6 +1,13 @@
-@echo off.
+@echo off
 setlocal
 call setEnv.bat
+
+echo Installing the service '%SERVICE_NAME%' ...
+echo Using DAEMON_HOME:    "%DAEMON_HOME%"
+echo Using DAEMON_LOGS:    "%DAEMON_LOGS%"
+echo Using JAVA_HOME:        "%JAVA_HOME%"
+
+
 aum-daemon.exe //IS//%SERVICE_NAME% ^
     --DisplayName="%SERVICE_NAME%" ^
     --Description="%SERVICE_NAME%" ^
@@ -20,7 +27,7 @@ aum-daemon.exe //IS//%SERVICE_NAME% ^
     --StdError=auto ^
     --LogPath=%DAEMON_LOGS% ^
     --LogLevel=Debug ^
-    --JvmOptions=%JAVA_OPTIONS% ^
+    --JvmOptions="-Ddaemon.home=%DAEMON_HOME%;" ^
     --JvmMs=128 ^
     --JvmMx=256
 echo install service aum-daemon
