@@ -1,6 +1,7 @@
+SET JAVA_HOME=C:\hjksoft\jdk\1.8
+SET JAVA_OPTIONS=-Ddaemon.home=%DAEMON_HOME%;
 SET DAEMON_HOME=%CD%\..
 SET DAEMON_LOGS=%DAEMON_HOME%\logs
-SET JAVA_HOME=C:\hjksoft\jdk\1.8
 SET JAVA=%JAVA_HOME%\bin\java.exe
-SET SERVER_NAME=aum-daemon
-SET CLASS=com.haojiankang.aum.daemon.Bootstrap
+SET SERVICE_NAME=aum-daemon
+SET JVM=%JAVA_HOME%\jre\bin\server\jvm.dll
