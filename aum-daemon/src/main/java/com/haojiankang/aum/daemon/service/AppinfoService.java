@@ -42,6 +42,7 @@ public class AppinfoService {
             try{
                 log.debug("register appinfo:{}",info);
                 String post = HttpUtils.post(host + appregister, HttpUtils.formBody("pointCode", info.getPointCode(), "appCode", info.getAppCode(), "version", info.getVersion(), "url", environment.getProperty("vcc.callback")), null);
+                log.debug("register response:{}",post);
                 SSTO ssto = JsonUtils.parse(post, SSTO.class);
                 if(ssto!=null){
                     log.debug("register response:{}",ssto);
